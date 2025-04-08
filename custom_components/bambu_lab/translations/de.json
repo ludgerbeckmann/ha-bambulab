@@ -39,12 +39,12 @@
       },
       "Bambu": {
         "title": "Bambu Lab Cloud-Verbindung",
-        "description": "Bitte geben Sie Ihre BambuLab-Zugangsdaten an:",
+        "description": "Bitte geben Sie Ihre Bambu Lab-Zugangsdaten an:",
         "data": {
           "region": "Konto-Region:",
           "email": "E-Mail-Adresse oder Telefonnummer",
           "password": "Passwort",
-          "newCode": "Fordern Sie einen neuen Code an",
+          "newCode": "Neuen Code anfordern",
           "verifyCode": "Bestätigungscode per E-Mail oder Telefon",
           "tfaCode": "Zwei-Faktor-Authentifizierungscode"
         }
@@ -69,8 +69,8 @@
             "name": "Erweiterte Optionen",
             "description": "Diese Optionen sind nur erforderlich, wenn Sie ein nicht standardmäßiges Setup haben.",
             "data": {
-              "disable_ssl_verify": "Deaktivieren Sie die SSL -Überprüfung",
-              "enable_firmware_update": "Aktivieren Sie den Firmware -Update -Support"
+              "disable_ssl_verify": "SSL-Überprüfung deaktivieren",
+              "enable_firmware_update": "Unterstützung für Firmware-Updates aktivieren"
             }
           }
         }
@@ -89,8 +89,8 @@
             "name": "Erweiterte Optionen",
             "description": "Diese Optionen sind nur erforderlich, wenn Sie ein nicht standardmäßiges Setup haben.",
             "data": {
-              "disable_ssl_verify": "Deaktivieren Sie die SSL -Überprüfung",
-              "enable_firmware_update": "Aktivieren Sie den Firmware -Update -Support"
+              "disable_ssl_verify": "SSL-Überprüfung deaktivieren",
+              "enable_firmware_update": "Unterstützung für Firmware-Updates aktivieren"
             }
           }
         }
@@ -149,8 +149,8 @@
             "name": "Erweiterte Optionen",
             "description": "Diese erweiterten Optionen sind frühe oder riskante Funktionen. Lesen Sie die Dokumentation und verwenden Sie sie auf eigenes Risiko.",
             "data": {
-              "disable_ssl_verify": "Deaktivieren Sie die SSL -Überprüfung",
-              "enable_firmware_update": "Aktivieren Sie den Firmware -Update -Support"
+              "disable_ssl_verify": "SSL-Überprüfung deaktivieren",
+              "enable_firmware_update": "Unterstützung für Firmware-Updates aktivieren"
             }
           }
         }
@@ -168,8 +168,8 @@
             "name": "Erweiterte Optionen",
             "description": "Diese erweiterten Optionen sind frühe oder riskante Funktionen. Lesen Sie die Dokumentation und verwenden Sie sie auf eigenes Risiko.",
             "data": {
-              "disable_ssl_verify": "Deaktivieren Sie die SSL -Überprüfung",
-              "enable_firmware_update": "Aktivieren Sie den Firmware -Update -Support"
+              "disable_ssl_verify": "SSL-Überprüfung deaktivieren",
+              "enable_firmware_update": "Unterstützung für Firmware-Updates aktivieren"
             }
           }
         }
@@ -194,7 +194,7 @@
         "name": "Online"
       },
       "firmware_update": {
-        "name": "Firmware Status"
+        "name": "Firmware Update"
       },
       "extruder_filament_state": {
         "name": "Extruder Filament Status"
@@ -249,7 +249,7 @@
     },
     "number": {
       "target_bed_temperature": {
-        "name": "Zieltemperatur des Druckbett"
+        "name": "Zieltemperatur vom Druckbett"
       },
       "target_nozzle_temperature": {
         "name": "Zieltemperatur der Düse"
@@ -268,13 +268,13 @@
     },
     "sensor": {
       "wifi_signal": {
-        "name": "Wi-Fi-Signalqualität"
+        "name": "WiFi-Signalqualität"
       },
       "bed_temp": {
         "name": "Druckbetttemperatur"
       },
       "target_bed_temp": {
-        "name": "Zieltemperatur des Druckbett"
+        "name": "Zieltemperatur vom Druckbett"
       },
       "chamber_temp": {
         "name": "Temperatur im Druckraum"
@@ -373,6 +373,12 @@
           "init": "Initialisierung"
         }
       },
+      "printable_objects": {
+        "name": "Druckbare Objekte"
+      },
+      "skipped_objects": {
+        "name": "Übersprungene Objekte"
+      },
       "mqtt_mode": {
         "name": "MQTT-Verbindungsmodus",
         "state": {
@@ -387,12 +393,12 @@
         "name": "Gcode Dateiname heruntergeladen"
       },
       "print_bed_type": {
-        "name": "Druckbett Typ",
+        "name": "Druckbett-Typ",
         "state": {
-          "textured_plate": "Strukturierte Platte",
-          "cool_plate": "Kühlplatte / PLA-Platte",
-          "hot_plate": "Glatte PEI-Platte/Hochtemperaturplatte",
-          "eng_plate": "Technische Platte"
+          "textured_plate": "Textured Plate",
+          "cool_plate": "Cool Plate / PLA Plate",
+          "hot_plate": "Smooth PEI Plate / High Temp Plate",
+          "eng_plate": "Engineering Plate"
         }
       },
       "print_length": {
@@ -419,7 +425,7 @@
         "name": "Verbleibende Zeit"
       },
       "end_time": {
-        "name": "Vrs. Fertigstellung"
+        "name": "Endzeit"
       },
       "total_usage_hours": {
         "name": "Gesamtnutzung"
@@ -445,6 +451,9 @@
           "hardened_steel": "Gehärteter Stahl",
           "stainless_steel": "Edelstahl"
         }
+      },
+      "ip_address": {
+        "name": "IP-Adresse"
       },
       "humidity_index": {
         "name": "Index der Luftfeuchtigkeit"
@@ -483,13 +492,13 @@
             "name": "Verbleibendes Filament"
           },
           "remain_enabled": {
-            "name": "Verbleibende Filamentschätzung aktiviert"
+            "name": "Berechnung Verbleibendes Filament aktiviert"
           },
           "tag_uid": {
-            "name": "Spulen -Seriennummer"
+            "name": "Seriennummer der Spule"
           },
           "filament_id": {
-            "name": "Filament -ID"
+            "name": "Filament-ID"
           },
           "tray_weight": {
             "name": "Maximales Filamentgewicht"
@@ -524,16 +533,16 @@
             "name": "Verbleibende Filamentmenge"
           },
           "tag_uid": {
-            "name": "Seriennummer des Filaments"
+            "name": "Seriennummer der Spule"
           },
           "type": {
             "name": "Typ"
           },
           "remain_enabled": {
-            "name": "Verbleibende Filamentschätzung aktiviert"
+            "name": "Berechnung Verbleibendes Filament aktiviert"
           },
           "filament_id": {
-            "name": "Filament -ID"
+            "name": "Filament-ID"
           },
           "tray_weight": {
             "name": "Maximales Filamentgewicht"
@@ -568,19 +577,19 @@
             "name": "Verbleibende Filamentmenge"
           },
           "tag_uid": {
-            "name": "Seriennummer des Filaments"
+            "name": "Seriennummer der Spule"
           },
           "type": {
             "name": "Typ"
           },
           "filament_id": {
-            "name": "Filament -ID"
+            "name": "Filament-ID"
           },
           "tray_weight": {
             "name": "Maximales Filamentgewicht"
           },
           "remain_enabled": {
-            "name": "Verbleibende Filamentschätzung aktiviert"
+            "name": "Berechnung Verbleibendes Filament aktiviert"
           }
         }
       },
@@ -612,19 +621,19 @@
             "name": "Verbleibende Filamentmenge"
           },
           "tag_uid": {
-            "name": "Seriennummer des Filaments"
+            "name": "Seriennummer der Spule"
           },
           "type": {
             "name": "Typ"
           },
           "filament_id": {
-            "name": "Filament -ID"
+            "name": "Filament-ID"
           },
           "tray_weight": {
             "name": "Maximales Filamentgewicht"
           },
           "remain_enabled": {
-            "name": "Verbleibende Filamentschätzung aktiviert"
+            "name": "Berechnung Verbleibendes Filament aktiviert"
           }
         }
       },
@@ -656,30 +665,21 @@
             "name": "Verbleibende Filamentmenge"
           },
           "tag_uid": {
-            "name": "Seriennummer des Filaments"
+            "name": "Seriennummer der Spule"
           },
           "type": {
             "name": "Typ"
           },
           "filament_id": {
-            "name": "Filament -ID"
+            "name": "Filament-ID"
           },
           "tray_weight": {
             "name": "Maximales Filamentgewicht"
           },
           "remain_enabled": {
-            "name": "Verbleibende Filamentschätzung aktiviert"
+            "name": "Berechnung Verbleibendes Filament aktiviert"
           }
         }
-      },
-      "ip_address": {
-        "name": "IP-Adresse"
-      },
-      "printable_objects": {
-        "name": "Druckbare Objekte"
-      },
-      "skipped_objects": {
-        "name": "Übersprungene Objekte"
       }
     },
     "camera": {
@@ -695,16 +695,16 @@
         "name": "Kamera aktivieren"
       },
       "imagecamera": {
-        "name": "Verwenden Sie eine Bildsensorkamera"
+        "name": "Bildsensorkamera verwenden"
       },
       "prompt_sound": {
         "name": "Aufforderungston zulassen"
       },
       "ftp": {
-        "name": "Laden Sie Modelldaten aus dem Drucker laden"
+        "name": "Modelldaten vom Drucker laden"
       },
       "timelapse": {
-        "name": "Laden Sie den neuesten Zeitplan aus dem Drucker"
+        "name": "Neueste Zeitrafferaufnahme vom Drucker laden"
       },
       "download_gcode_file": {
         "name": "GCode Datei in HA speichern"
@@ -712,7 +712,7 @@
     },
     "update": {
       "firmware_update": {
-        "name": "Firmware Status"
+        "name": "Firmware Update"
       }
     }
   },
@@ -727,7 +727,7 @@
   "issues": {
     "authentication_failed": {
       "title": "Authentifizierung fehlgeschlagen für {device}",
-      "description": "Der Versuch, eine Verbindung zum Bambu -Labor herzustellen, schlug fehl. Bitte konfigurieren Sie die Integration und stellen Sie neue Anmeldeinformationen an."
+      "description": "Der Versuch, eine Verbindung zu Bambu Lab herzustellen, schlug fehl. Bitte konfigurieren Sie die Integration und stellen Sie neue Anmeldeinformationen an."
     }
   }
 }
