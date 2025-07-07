@@ -82,7 +82,8 @@
           "serial": "Seriennummer:",
           "host": "IP-Adresse des lokalen Druckers:",
           "access_code": "Zugangscode",
-          "usage_hours": "Aktuelle Nutzungsstunden (optional):"
+          "usage_hours": "Aktuelle Nutzungsstunden (optional):",
+          "developer_lan_mode": "Entwickler LAN -Modus aktiviert:"
         },
         "sections": {
           "advanced": {
@@ -161,7 +162,8 @@
         "data": {
           "host": "IP-Adresse des lokalen Druckers:",
           "access_code": "Zugangscode",
-          "usage_hours": "Aktuelle Nutzungsstunden (optional):"
+          "usage_hours": "Aktuelle Nutzungsstunden (optional):",
+          "developer_lan_mode": "Entwickler LAN -Modus aktiviert:"
         },
         "sections": {
           "advanced": {
@@ -198,6 +200,15 @@
       },
       "extruder_filament_state": {
         "name": "Extruder Filament Status"
+      },
+      "developer_lan_mode": {
+        "name": "Entwickler LAN -Modus"
+      },
+      "mqtt_encryption": {
+        "name": "MQTT -Verschlüsselungsfirmware"
+      },
+      "active_ams": {
+        "name": "Aktiv"
       }
     },
     "button": {
@@ -267,6 +278,14 @@
       }
     },
     "sensor": {
+      "tool_module": {
+        "name": "Werkzeugmodul",
+        "state": {
+          "none": "Nicht montiert",
+          "laser": "Laser",
+          "cutter": "Schneider"
+        }
+      },
       "wifi_signal": {
         "name": "Wi-Fi-Signalqualität"
       },
@@ -353,7 +372,23 @@
           "paused_cutter_error": "Aufgrund eines Schneidefehlers angehalten",
           "paused_first_layer_error": "Aufgrund eines Fehlers auf der ersten Ebene pausiert",
           "paused_nozzle_clog": "Wegen verstopfter Düse unterbrochen",
-          "idle": "Leerlauf"
+          "idle": "Leerlauf",
+          "check_absolute_accuracy_before_calibration": "Überprüfen Sie den Drucker Absolute Genauigkeit vor der Kalibrierung",
+          "absolute_accuracy_calibration": "Absolute Genauigkeitskalibrierung",
+          "check_absolute_accuracy_after_calibration": "Überprüfen Sie den Drucker die absolute Genauigkeit nach der Kalibrierung",
+          "calibrate_nozzle_offset": "Düsenversetztkalibrierung",
+          "bed_level_high_temperature": "Hochtemperatur -Auto -Bettniveau",
+          "check_quick_release": "Auto -Check: Schnellverkaufshebel",
+          "check_door_and_cover": "Autoscheck: Tür und obere Abdeckung",
+          "laser_calibration": "Laserkalibrierung",
+          "check_plaform": "Autoscheck: Plattform",
+          "check_birdeye_camera_position": "Autoscheck: Birdeye -Kamera -Position",
+          "calibrate_birdeye_camera": "Kalibrieren Sie die Vogelkamera",
+          "bed_level_phase_1": "Auto -Bett -Leveling - Phase 1",
+          "bed_level_phase_2": "Auto -Bett -Leveling - Phase 2",
+          "heating_chamber": "Heizkammer",
+          "heated_bedcooling": "Erhitzte Bettkühlung",
+          "print_calibration_lines": "Drucken von Kalibrierungslinien"
         }
       },
       "print_progress": {
@@ -392,7 +427,8 @@
           "textured_plate": "Strukturierte Platte",
           "cool_plate": "Kühlplatte / PLA-Platte",
           "hot_plate": "Glatte PEI-Platte/Hochtemperaturplatte",
-          "eng_plate": "Technische Platte"
+          "eng_plate": "Technische Platte",
+          "supertack_plate": "Cool Plate Supertack"
         }
       },
       "print_length": {
@@ -433,9 +469,6 @@
       "active_tray": {
         "name": "Aktiver Slot"
       },
-      "active_tray_index": {
-        "name": "Aktiver Slotindex"
-      },
       "nozzle_diameter": {
         "name": "Düsengröße"
       },
@@ -448,9 +481,6 @@
       },
       "humidity_index": {
         "name": "Index der Luftfeuchtigkeit"
-      },
-      "ams_temp": {
-        "name": "AMS-Temperatur"
       },
       "external_spool": {
         "name": "Externe Spule",
@@ -680,6 +710,36 @@
       },
       "skipped_objects": {
         "name": "Übersprungene Objekte"
+      },
+      "remaining_drying_time": {
+        "name": "Verbleibende Trocknungszeit"
+      },
+      "ams_temp": {
+        "name": "Temperatur"
+      },
+      "humidity": {
+        "name": "Luftfeuchtigkeit"
+      },
+      "left_nozzle_temp": {
+        "name": "Linke Düsentemperatur"
+      },
+      "left_target_nozzle_temp": {
+        "name": "Linksdüsenzieltemperatur"
+      },
+      "right_nozzle_temp": {
+        "name": "Rechte Düsentemperatur"
+      },
+      "right_target_nozzle_temp": {
+        "name": "Rechte Düsenzieltemperatur"
+      },
+      "sdcard_status": {
+        "name": "SD -Kartenstatus",
+        "state": {
+          "missing": "Fehlen",
+          "normal": "Normal",
+          "abnormal": "Abnormal",
+          "readonly": "Nur lesen"
+        }
       }
     },
     "camera": {
@@ -688,9 +748,6 @@
       }
     },
     "switch": {
-      "manual": {
-        "name": "Manueller Aktualisierungsmodus"
-      },
       "camera": {
         "name": "Kamera aktivieren"
       },

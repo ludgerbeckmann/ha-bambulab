@@ -39,7 +39,7 @@ NUMBERS: tuple[BambuLabNumberEntityDescription, ...] = (
         native_min_value=0,
         native_max_value=320, # TODO: Determine by actual printer model
         native_step=1,
-        value_fn=lambda device: device.temperature.target_nozzle_temp,
+        value_fn=lambda device: device.temperature.active_nozzle_target_temperature,
         set_value_fn=lambda device, value: device.temperature.set_target_temp(TempEnum.NOZZLE, value)
     ),
     BambuLabNumberEntityDescription(
@@ -91,7 +91,9 @@ class BambuLabNumber(BambuLabEntity, NumberEntity):
     @property
     def available(self) -> bool:
         """Is the number available"""
-        return self.coordinator.get_model().supports_feature(Features.SET_TEMPERATURE)
+        available = self.coordinator.get_model().supports_feature(Features.SET_TEMPERATURE)
+        available = available and not self.coordinator.get_model().supports_feature(Features.MQTT_ENCRYPTION_ENABLED)
+        return available
     
     @property
     def native_value(self) -> float | None:

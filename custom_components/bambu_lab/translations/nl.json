@@ -82,7 +82,8 @@
           "serial": "Serienummer:",
           "host": "Lokaal IP-adres van printer:",
           "access_code": "Toegangscode:",
-          "usage_hours": "Huidige gebruiksduur in uren (optioneel):"
+          "usage_hours": "Huidige gebruiksduur in uren (optioneel):",
+          "developer_lan_mode": "Ontwikkelaar LAN -modus ingeschakeld:"
         },
         "sections": {
           "advanced": {
@@ -161,7 +162,8 @@
         "data": {
           "host": "Lokaal IP-adres van printer:",
           "access_code": "Toegangscode:",
-          "usage_hours": "Huidige gebruiksduur in uren (optioneel):"
+          "usage_hours": "Huidige gebruiksduur in uren (optioneel):",
+          "developer_lan_mode": "Ontwikkelaar LAN -modus ingeschakeld:"
         },
         "sections": {
           "advanced": {
@@ -198,6 +200,15 @@
       },
       "extruder_filament_state": {
         "name": "Extruder Filament State"
+      },
+      "developer_lan_mode": {
+        "name": "Ontwikkelaar LAN -modus"
+      },
+      "mqtt_encryption": {
+        "name": "MQTT -coderingsfirmware"
+      },
+      "active_ams": {
+        "name": "Actief"
       }
     },
     "button": {
@@ -267,6 +278,14 @@
       }
     },
     "sensor": {
+      "tool_module": {
+        "name": "Gereedschapsmodule",
+        "state": {
+          "none": "Niet gemonteerd",
+          "laser": "Laser",
+          "cutter": "Snijder"
+        }
+      },
       "wifi_signal": {
         "name": "Wi-Fi-signaal"
       },
@@ -353,7 +372,23 @@
           "paused_cutter_error": "Gepauzeerd vanwege een fout met de filamentsnijder",
           "paused_first_layer_error": "Gepauzeerd vanwege een fout met de eerste laag",
           "paused_nozzle_clog": "Gepauzeerd vanwege een verstopping in de nozzle",
-          "idle": "Inactief"
+          "idle": "Inactief",
+          "check_absolute_accuracy_before_calibration": "Controleer de absolute nauwkeurigheid van de printer vóór kalibratie",
+          "absolute_accuracy_calibration": "Absolute nauwkeurigheid kalibratie",
+          "check_absolute_accuracy_after_calibration": "Controleer de absolute nauwkeurigheid van de printer na kalibratie",
+          "calibrate_nozzle_offset": "Kalibratie van de spuitbeurt",
+          "bed_level_high_temperature": "Auto -bed nivellering op hoge temperatuur",
+          "check_quick_release": "Auto check: snelle release hendel",
+          "check_door_and_cover": "Auto check: deur en bovenklep",
+          "laser_calibration": "Laserkalibratie",
+          "check_plaform": "Auto check: platform",
+          "check_birdeye_camera_position": "Auto controle: Birdeye -camerapositie",
+          "calibrate_birdeye_camera": "Kalibreer Birdeye -camera",
+          "bed_level_phase_1": "Auto -bed nivellering - fase 1",
+          "bed_level_phase_2": "Auto -bed nivellering - fase 2",
+          "heating_chamber": "Verwarmingskamer",
+          "heated_bedcooling": "Verwarmde bedkoeling",
+          "print_calibration_lines": "Kalibratielijnen afdrukken"
         }
       },
       "print_progress": {
@@ -392,7 +427,8 @@
           "textured_plate": "Textured plate",
           "cool_plate": "Cool Plate / PLA Plate",
           "hot_plate": "Smooth PEI Plate / High Temp Plate",
-          "eng_plate": "Engineering Plate"
+          "eng_plate": "Engineering Plate",
+          "supertack_plate": "Coole plaat supertack"
         }
       },
       "print_length": {
@@ -433,9 +469,6 @@
       "active_tray": {
         "name": "Actieve tray"
       },
-      "active_tray_index": {
-        "name": "Actieve tray-index"
-      },
       "nozzle_diameter": {
         "name": "Nozzle-grootte"
       },
@@ -451,9 +484,6 @@
       },
       "humidity_index": {
         "name": "Luchtvochtigheidsindex"
-      },
-      "ams_temp": {
-        "name": "AMS-temperatuur"
       },
       "external_spool": {
         "name": "Externe spoel",
@@ -680,6 +710,36 @@
       },
       "gcode_file_downloaded": {
         "name": "Gcode -bestand gedownload"
+      },
+      "remaining_drying_time": {
+        "name": "Resterende droogtijd"
+      },
+      "ams_temp": {
+        "name": "Temperatuur"
+      },
+      "humidity": {
+        "name": "Vochtigheid"
+      },
+      "left_nozzle_temp": {
+        "name": "Linker mondstuktemperatuur"
+      },
+      "left_target_nozzle_temp": {
+        "name": "Verlof mondstuk doeltemperatuur"
+      },
+      "right_nozzle_temp": {
+        "name": "Juiste mondstuktemperatuur"
+      },
+      "right_target_nozzle_temp": {
+        "name": "Rechter mondstuk doeltemperatuur"
+      },
+      "sdcard_status": {
+        "name": "SD -kaartstatus",
+        "state": {
+          "missing": "Ontbrekend",
+          "normal": "Normaal",
+          "abnormal": "Abnormaal",
+          "readonly": "Alleen lezen"
+        }
       }
     },
     "camera": {
@@ -688,9 +748,6 @@
       }
     },
     "switch": {
-      "manual": {
-        "name": "Handmatige vernieuwingsmodus"
-      },
       "camera": {
         "name": "Camera inschakelen"
       },

@@ -33,7 +33,7 @@ from .commands import (
     PUSH_ALL,
     START_PUSH,
 )
-
+from .tests import MockMQTTClient
 
 class WatchdogThread(threading.Thread):
 
@@ -56,7 +56,7 @@ class WatchdogThread(threading.Thread):
         LOGGER.debug("Watchdog thread started.")
 
         WATCHDOG_TIMER = 60
-        while True:
+        while not self._stop_event.is_set():
             # Wait out the remainder of the watchdog delay or 1s, whichever is higher.
             interval = time.time() - self._last_received_data
             wait_time = max(1, WATCHDOG_TIMER - interval)
@@ -147,7 +147,8 @@ class ChamberImageThread(threading.Thread):
                     except socket.error as e:
                         LOGGER.error(f"Socket error: {e}")
                         # Sleep to allow printer to stabilize during boot when it may fail these connection attempts repeatedly.
-                        time.sleep(1)
+                        if self._stop_event.wait(1):
+                            break
                         continue
 
                     sslSock.setblocking(False)
@@ -158,13 +159,15 @@ class ChamberImageThread(threading.Thread):
 
                         except ssl.SSLWantReadError:
                             #LOGGER.debug("SSLWantReadError")
-                            time.sleep(1)
+                            if self._stop_event.wait(1):
+                                break
                             continue
 
                         except Exception as e:
                             LOGGER.error("A Chamber Image thread inner exception occurred:")
                             LOGGER.error(f"Exception. Type: {type(e)} Args: {e}")
-                            time.sleep(1)
+                            if self._stop_event.wait(1):
+                                break
                             continue
 
                         if img is not None and len(dr) > 0:
@@ -241,7 +244,7 @@ class MqttThread(threading.Thread):
         LOGGER.debug("MQTT listener thread started.")
 
         exceptionSeen = ""
-        while True:
+        while not self._stop_event.is_set():
             try:
                 host = self._client.host if self._client._local_mqtt else self._client.bambu_cloud.cloud_mqtt_host
                 LOGGER.debug(f"Connect: Attempting Connection to {host}")
@@ -255,31 +258,39 @@ class MqttThread(threading.Thread):
                 if exceptionSeen != "TimeoutError":
                     LOGGER.debug(f"TimeoutError: {e}.")
                 exceptionSeen = "TimeoutError"
-                time.sleep(5)
+                if self._stop_event.wait(5):
+                    break
             except ConnectionError as e:
                 if exceptionSeen != "ConnectionError":
                     LOGGER.debug(f"ConnectionError: {e}.")
                 exceptionSeen = "ConnectionError"
-                time.sleep(5)
+                if self._stop_event.wait(5):
+                    break
             except OSError as e:
                 if e.errno == 113:
                     if exceptionSeen != "OSError113":
                         LOGGER.debug(f"OSError: {e}.")
                     exceptionSeen = "OSError113"
-                    time.sleep(5)
+                    if self._stop_event.wait(5):
+                        break
                 else:
                     LOGGER.error("A listener loop thread exception occurred:")
                     LOGGER.error(f"Exception. Type: {type(e)} Args: {e}")
-                    time.sleep(1)  # Avoid a tight loop if this is a persistent error.
+                    if self._stop_event.wait(1):  # Avoid a tight loop if this is a persistent error.
+                        break
             except Exception as e:
                 LOGGER.error("A listener loop thread exception occurred:")
                 LOGGER.error(f"Exception. Type: {type(e)} Args: {e}")
-                time.sleep(1)  # Avoid a tight loop if this is a persistent error.
+                if self._stop_event.wait(1):  # Avoid a tight loop if this is a persistent error.
+                    break
 
-            if self._client.client is None:
+            if self._client.client is None or self._stop_event.is_set():
                 break
 
-            self._client.client.disconnect()
+            try:
+                self._client.client.disconnect()
+            except Exception:
+                pass
 
         LOGGER.info("MQTT listener thread exited.")
 
@@ -324,8 +335,11 @@ class BambuClient:
     """Initialize Bambu Client to connect to MQTT Broker"""
     _watchdog = None
     _camera = None
-    _usage_hours: float
-    _test_mode = bool
+    _mqtt = None
+    _usage_hours: float = 0
+    _test_mode: bool = False
+    _mock: bool = False
+    client = None
 
     def __init__(self, config):
         self._config = config
@@ -337,8 +351,9 @@ class BambuClient:
         self._auth_token = config.get('auth_token', '')
         self._device_type = config.get('device_type', 'unknown').upper()
         self._local_mqtt = config.get('local_mqtt', False)
-        self._manual_refresh_mode = False #config.get('manual_refresh_mode', False)
         self._serial = config.get('serial', '')
+        if self._serial.startswith('MOCK-'):
+            self._mock = True
         self._usage_hours = config.get('usage_hours', 0)
         self._username = config.get('username', '')
         self._enable_camera = config.get('enable_camera', True)
@@ -379,20 +394,6 @@ class BambuClient:
     def connected(self):
         """Return if connected to server"""
         return self._connected
-
-    @property
-    def manual_refresh_mode(self):
-        """Return if the integration is running in poll mode"""
-        return self._manual_refresh_mode
-
-    async def set_manual_refresh_mode(self, on):
-        self._manual_refresh_mode = on
-        if self._manual_refresh_mode:
-            # Disconnect from the server. User must manually hit the refresh button to connect to refresh and then it will immediately disconnect.
-            self.disconnect()
-        else:
-            # Reconnect normally
-            await self.connect(self._callback)
 
     @property
     def camera_enabled(self):
@@ -445,7 +446,10 @@ class BambuClient:
 
     async def connect(self, callback):
         """Connect to the MQTT Broker"""
-        self.client = mqtt.Client()
+        if self._mock:
+            self.client = MockMQTTClient(self._serial)
+        else:
+            self.client = mqtt.Client()
         self._callback = callback
         self.client.on_connect = self.on_connect
         self.client.on_disconnect = self.on_disconnect
@@ -489,7 +493,7 @@ class BambuClient:
         if not self._device.supports_feature(Features.CAMERA_RTSP):
             if self._device.supports_feature(Features.CAMERA_IMAGE):
                 if self._enable_camera and not self._test_mode:
-                    if self._device.info.ip_address != "" and self._access_code != "":
+                    if self._device.info.ip_address != "" and self._device.info.ip_address != "0.0.0.0" and self._access_code != "":
                         LOGGER.debug("Starting Chamber Image thread")
                         self._camera = ChamberImageThread(self)
                         self._camera.start()
@@ -505,11 +509,13 @@ class BambuClient:
 
     def _on_connect(self):
         self._connected = True
-        self.subscribe_and_request_info()
 
-        LOGGER.debug("Starting watchdog thread")
-        self._watchdog = WatchdogThread(self)
-        self._watchdog.start()
+        if self._device.info.ip_address != "" and self._device.info.ip_address != "0.0.0.0":
+            LOGGER.debug("Starting watchdog thread")
+            self._watchdog = WatchdogThread(self)
+            self._watchdog.start()
+
+        self.subscribe_and_request_info()
 
         # Start camera if enabled
         self.start_camera()
@@ -595,17 +601,16 @@ class BambuClient:
                     self._on_disconnect()
             else:
                 self._device.info.set_online(True)
-                self._watchdog.received_data()
+                if self._watchdog is not None:
+                    self._watchdog.received_data()
                 if json_data.get("print"):
                     self._device.print_update(data=json_data.get("print"))
-                    # Once we receive data, if in manual refresh mode, we disconnect again.
-                    if self._manual_refresh_mode:
-                        self.disconnect()
                     if json_data.get("print").get("msg", 0) == 0:
                         self._refreshed= False
                 elif json_data.get("info") and json_data.get("info").get("command") == "get_version":
                     LOGGER.debug("Got Version Data")
                     self._device.info_update(data=json_data.get("info"))
+
 
         except Exception as e:
             LOGGER.error("An exception occurred processing a message:", exc_info=e)
@@ -619,7 +624,7 @@ class BambuClient:
     def publish(self, msg):
         """Publish a custom message"""
         result = self.client.publish(f"device/{self._serial}/request", json.dumps(msg))
-        status = result[0]
+        status = result.rc
         if status == 0:
             LOGGER.debug(f"Sent {msg} to topic device/{self._serial}/request")
             return True
@@ -629,16 +634,12 @@ class BambuClient:
 
     async def refresh(self):
         """Force refresh data"""
-
-        if self._manual_refresh_mode:
-            await self.connect(self._callback)
-        else:
-            LOGGER.debug("Force Refresh: Getting Version Info")
-            self._refreshed = True
-            self.publish(GET_VERSION)
-            LOGGER.debug("Force Refresh: Request Push All")
-            self._refreshed = True
-            self.publish(PUSH_ALL)
+        LOGGER.debug("Force Refresh: Getting Version Info")
+        self._refreshed = True
+        self.publish(GET_VERSION)
+        LOGGER.debug("Force Refresh: Request Push All")
+        self._refreshed = True
+        self.publish(PUSH_ALL)
 
     def get_device(self):
         """Return device"""
@@ -647,9 +648,35 @@ class BambuClient:
     def disconnect(self):
         """Disconnect the Bambu Client from server"""
         LOGGER.debug("Disconnect: Client Disconnecting")
+        
+        # Stop and wait for background threads
+        if self._mqtt is not None:
+            LOGGER.debug("Stopping MQTT thread")
+            self._mqtt.stop()
+            self._mqtt.join(timeout=5)
+            self._mqtt = None
+            
+        if self._watchdog is not None:
+            LOGGER.debug("Stopping watchdog thread")
+            self._watchdog.stop()
+            self._watchdog.join(timeout=5)
+            self._watchdog = None
+            
+        if self._camera is not None:
+            LOGGER.debug("Stopping camera thread")
+            self._camera.stop()
+            self._camera.join(timeout=5)
+            self._camera = None
+        
+        # Disconnect MQTT client
         if self.client is not None:
-            self.client.disconnect()
-            self.client = None
+            try:
+                self.client.loop_stop()
+                self.client.disconnect()
+            except Exception as e:
+                LOGGER.debug(f"Error during MQTT disconnect: {e}")
+            finally:
+                self.client = None
 
 
     def ftp_connection(self) -> ImplicitFTP_TLS:
@@ -690,7 +717,10 @@ class BambuClient:
                 result.put(True)
 
         self._test_mode = True
-        self.client = mqtt.Client()
+        if self._mock:
+            self.client = MockMQTTClient(self._serial)
+        else:
+            self.client = mqtt.Client()
         self.client.on_connect = self.try_on_connect
         self.client.on_disconnect = self.on_disconnect
         self.client.on_message = on_message
@@ -710,6 +740,7 @@ class BambuClient:
         try:
             self.client.connect(host, self._port)
             self.client.loop_start()
+            LOGGER.debug("Waiting for reponse.")
             if result.get(timeout=10):
                 LOGGER.debug("Connection test was successful")
                 return True

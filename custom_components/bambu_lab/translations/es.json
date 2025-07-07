@@ -82,7 +82,8 @@
           "serial": "Número de Serie:",
           "host": "Dirección de IP Local de la Impresora:",
           "access_code": "Código de Acceso:",
-          "usage_hours": "Cantidad de horas de uso (opcional):"
+          "usage_hours": "Cantidad de horas de uso (opcional):",
+          "developer_lan_mode": "Modo LAN de desarrollador habilitado:"
         },
         "sections": {
           "advanced": {
@@ -161,7 +162,8 @@
         "data": {
           "host": "Dirección de IP Local de la Impresora:",
           "access_code": "Código de Acceso:",
-          "usage_hours": "Cantidad de horas de uso (opcional):"
+          "usage_hours": "Cantidad de horas de uso (opcional):",
+          "developer_lan_mode": "Modo LAN de desarrollador habilitado:"
         },
         "sections": {
           "advanced": {
@@ -198,6 +200,15 @@
       },
       "extruder_filament_state": {
         "name": "Estado del filamento extrusor"
+      },
+      "developer_lan_mode": {
+        "name": "Modo LAN de desarrollador"
+      },
+      "mqtt_encryption": {
+        "name": "Firmware de cifrado MQTT"
+      },
+      "active_ams": {
+        "name": "Activo"
       }
     },
     "button": {
@@ -267,6 +278,14 @@
       }
     },
     "sensor": {
+      "tool_module": {
+        "name": "Módulo de herramienta",
+        "state": {
+          "none": "No montado",
+          "laser": "Láser",
+          "cutter": "Cortador"
+        }
+      },
       "wifi_signal": {
         "name": "Señal Wi-Fi"
       },
@@ -353,7 +372,23 @@
           "paused_cutter_error": "En pausa debido a un error con el cortador de filamento",
           "paused_first_layer_error": "En pausa debido a un error con la primera capa",
           "paused_nozzle_clog": "En pausa debido a una obstrucción en la boquilla",
-          "idle": "Inactivo"
+          "idle": "Inactivo",
+          "check_absolute_accuracy_before_calibration": "Verifique la precisión absoluta de la impresora antes de la calibración",
+          "absolute_accuracy_calibration": "Calibración de precisión absoluta",
+          "check_absolute_accuracy_after_calibration": "Verifique la precisión absoluta de la impresora después de la calibración",
+          "calibrate_nozzle_offset": "Calibración de compensación de boquilla",
+          "bed_level_high_temperature": "Nivelación de lecho automático de alta temperatura",
+          "check_quick_release": "Verificación automática: palanca de lanzamiento rápido",
+          "check_door_and_cover": "Verificación automática: puerta y cubierta superior",
+          "laser_calibration": "Calibración láser",
+          "check_plaform": "Verificación automática: plataforma",
+          "check_birdeye_camera_position": "Verificación automática: posición de la cámara Birdeye",
+          "calibrate_birdeye_camera": "Calibrar cámara birdeye",
+          "bed_level_phase_1": "Nivelación de cama automática - Fase 1",
+          "bed_level_phase_2": "Nivelación de cama automática - Fase 2",
+          "heating_chamber": "Cámara de calefacción",
+          "heated_bedcooling": "Enfriamiento de la cama con calefacción",
+          "print_calibration_lines": "Impresión de líneas de calibración"
         }
       },
       "print_progress": {
@@ -389,7 +424,8 @@
           "textured_plate": "Placa Texturizada",
           "cool_plate": "Placa Fría / Placa PLA",
           "hot_plate": "Placa PEI Lisa / Placa de Alta Temperatura",
-          "eng_plate": "Placa de Ingeniería"
+          "eng_plate": "Placa de Ingeniería",
+          "supertack_plate": "Supertack de placa fría"
         }
       },
       "print_length": {
@@ -430,9 +466,6 @@
       "active_tray": {
         "name": "Bandeja activa"
       },
-      "active_tray_index": {
-        "name": "Índice de bandeja activa"
-      },
       "nozzle_diameter": {
         "name": "Tamaño de boquilla"
       },
@@ -445,9 +478,6 @@
       },
       "humidity_index": {
         "name": "Índice de humedad"
-      },
-      "ams_temp": {
-        "name": "Temperatura del AMS"
       },
       "external_spool": {
         "name": "Bobina externa",
@@ -680,6 +710,36 @@
       },
       "gcode_file_downloaded": {
         "name": "Archivo Gcode descargado"
+      },
+      "remaining_drying_time": {
+        "name": "Tiempo de secado restante"
+      },
+      "ams_temp": {
+        "name": "Temperatura"
+      },
+      "humidity": {
+        "name": "Humedad"
+      },
+      "left_nozzle_temp": {
+        "name": "Temperatura de la boquilla izquierda"
+      },
+      "left_target_nozzle_temp": {
+        "name": "Temperatura objetivo de la boquilla izquierda"
+      },
+      "right_nozzle_temp": {
+        "name": "Temperatura de la boquilla derecha"
+      },
+      "right_target_nozzle_temp": {
+        "name": "Temperatura objetivo de la boquilla derecha"
+      },
+      "sdcard_status": {
+        "name": "Estado de la tarjeta SD",
+        "state": {
+          "missing": "Desaparecido",
+          "normal": "Normal",
+          "abnormal": "Anormal",
+          "readonly": "Solo lectura"
+        }
       }
     },
     "camera": {
@@ -688,9 +748,6 @@
       }
     },
     "switch": {
-      "manual": {
-        "name": "Modo de actualización manual"
-      },
       "camera": {
         "name": "Habilitar cámara"
       },

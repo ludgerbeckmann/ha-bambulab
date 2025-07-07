@@ -82,7 +82,8 @@
           "serial": "Numer seryjny:",
           "host": "Lokalny adres IP drukarki:",
           "access_code": "Kod dostępu:",
-          "usage_hours": "Aktualny czas pracy (opcjonalnie):"
+          "usage_hours": "Aktualny czas pracy (opcjonalnie):",
+          "developer_lan_mode": "Włączony tryb programisty LAN:"
         },
         "sections": {
           "advanced": {
@@ -161,7 +162,8 @@
         "data": {
           "host": "Lokalny adres IP drukarki:",
           "access_code": "Kod dostępu:",
-          "usage_hours": "Aktualny czas pracy (opcjonalnie):"
+          "usage_hours": "Aktualny czas pracy (opcjonalnie):",
+          "developer_lan_mode": "Włączony tryb programisty LAN:"
         },
         "sections": {
           "advanced": {
@@ -179,7 +181,7 @@
   "entity": {
     "binary_sensor": {
       "door_open": {
-        "name": "Drzwi obudowy"
+        "name": "Drzwi komory"
       },
       "timelapse": {
         "name": "Nagrywanie timelapse"
@@ -197,7 +199,16 @@
         "name": "Aktualizacja oprogramowania"
       },
       "extruder_filament_state": {
-        "name": "Stan włókien wytłaczania"
+        "name": "Stan filamentu w ekstruderze"
+      },
+      "developer_lan_mode": {
+        "name": "Tryb programisty LAN"
+      },
+      "mqtt_encryption": {
+        "name": "Oprogramowanie układowe szyfrowania MQTT"
+      },
+      "active_ams": {
+        "name": "Aktywny"
       }
     },
     "button": {
@@ -257,7 +268,7 @@
     },
     "select": {
       "printing_speed": {
-        "name": "Prędkość drukowania",
+        "name": "Prędkość druku",
         "state": {
           "silent": "Cichy",
           "standard": "Standardowy",
@@ -267,6 +278,14 @@
       }
     },
     "sensor": {
+      "tool_module": {
+        "name": "Moduł narzędziowy",
+        "state": {
+          "none": "Nie zamontowany",
+          "laser": "Laser",
+          "cutter": "Nóż"
+        }
+      },
       "wifi_signal": {
         "name": "Sygnał Wi-Fi"
       },
@@ -330,7 +349,7 @@
           "scanning_bed_surface": "Skanowanie powierzchni stołu",
           "inspecting_first_layer": "Kontrola pierwszej warstwy",
           "identifying_build_plate_type": "Identyfikacja typu płyty roboczej",
-          "calibrating_micro_lidar": "Kalibracja mikro LiDAR",
+          "calibrating_micro_lidar": "Kalibracja LiDAR",
           "homing_toolhead": "Pozycjonowanie głowicy",
           "cleaning_nozzle_tip": "Czyszczenie końcówki dyszy",
           "checking_extruder_temperature": "Sprawdzanie temperatury ekstrudera",
@@ -348,12 +367,28 @@
           "paused_chamber_temperature_control_error": "Pauza – błąd kontroli temperatury komory",
           "cooling_chamber": "Chłodzenie komory",
           "paused_user_gcode": "Pauza przez kod G",
-          "motor_noise_showoff": "Pokaz hałasu silnika",
+          "motor_noise_showoff": "Pokaz dzwięku silników",
           "paused_nozzle_filament_covered_detected": "Pauza – wykryto filament na dyszy",
           "paused_cutter_error": "Pauza – błąd obcinacza",
           "paused_first_layer_error": "Pauza – błąd pierwszej warstwy",
           "paused_nozzle_clog": "Pauza – zatkana dysza",
-          "idle": "Bezczynny"
+          "idle": "Bezczynny",
+          "check_absolute_accuracy_before_calibration": "Sprawdź bezwzględną dokładność drukarki przed kalibracją",
+          "absolute_accuracy_calibration": "Absolutna kalibracja dokładności",
+          "check_absolute_accuracy_after_calibration": "Sprawdź dokładność drukarki bez kalibracji",
+          "calibrate_nozzle_offset": "Kalibracja przesunięcia dyszy",
+          "bed_level_high_temperature": "Wysokiej temperatury automatyczne wyrównanie łóżka",
+          "check_quick_release": "Auto Check: Szybka dźwignia wydania",
+          "check_door_and_cover": "Auto Kontrola: drzwi i górna pokrywa",
+          "laser_calibration": "Kalibracja laserowa",
+          "check_plaform": "Auto Check: Platform",
+          "check_birdeye_camera_position": "Auto Kontrola: Pozycja kamery BirEYe",
+          "calibrate_birdeye_camera": "Kalibruj kamerę BirEye",
+          "bed_level_phase_1": "Auto -Bed Leveling - Faza 1",
+          "bed_level_phase_2": "Auto -Bed Leveling - faza 2",
+          "heating_chamber": "Komora grzewcza",
+          "heated_bedcooling": "Ogrzane chłodzenie łóżka",
+          "print_calibration_lines": "Linie kalibracji drukowania"
         }
       },
       "print_progress": {
@@ -393,19 +428,20 @@
         "name": "Pobrany plik G-code"
       },
       "print_bed_type": {
-        "name": "Print bed type",
+        "name": "Typ płyty",
         "state": {
           "textured_plate": "Textured plate",
           "cool_plate": "Cool Plate / PLA Plate",
           "hot_plate": "Smooth PEI Plate / High Temp Plate",
-          "eng_plate": "Engineering Plate"
+          "eng_plate": "Engineering Plate",
+          "supertack_plate": "Fajny supertack płyty"
         }
       },
       "print_length": {
-        "name": "Długość druku"
+        "name": "Długość filamentu"
       },
       "print_weight": {
-        "name": "Waga druku"
+        "name": "Waga filamentu"
       },
       "subtask_name": {
         "name": "Nazwa zadania"
@@ -428,7 +464,7 @@
         "name": "Czas zakończenia"
       },
       "total_usage_hours": {
-        "name": "Całkowity czas użytkowania"
+        "name": "Całkowity czas pracy"
       },
       "current_layer": {
         "name": "Aktualna warstwa"
@@ -437,10 +473,7 @@
         "name": "Łączna liczba warstw"
       },
       "active_tray": {
-        "name": "Aktywna tacka"
-      },
-      "active_tray_index": {
-        "name": "Indeks aktywnej tacki"
+        "name": "Aktywny slot"
       },
       "nozzle_diameter": {
         "name": "Średnica dyszy"
@@ -456,10 +489,7 @@
         "name": "Adres IP"
       },
       "humidity_index": {
-        "name": "Wskaźnik wilgotności"
-      },
-      "ams_temp": {
-        "name": "Temperatura AMS"
+        "name": "Indeks wilgotności"
       },
       "external_spool": {
         "name": "Zewnętrzna szpula",
@@ -471,7 +501,7 @@
             "name": "Kolor"
           },
           "empty": {
-            "name": "Pusta"
+            "name": "Brak"
           },
           "k_value": {
             "name": "Wartość K"
@@ -506,7 +536,7 @@
         }
       },
       "tray_1": {
-        "name": "Tacka 1",
+        "name": "Slot 1",
         "state_attributes": {
           "active": {
             "name": "Aktywna"
@@ -515,7 +545,7 @@
             "name": "Kolor"
           },
           "empty": {
-            "name": "Pusta"
+            "name": "Pusty"
           },
           "k_value": {
             "name": "Wartość K"
@@ -550,7 +580,7 @@
         }
       },
       "tray_2": {
-        "name": "Tacka 2",
+        "name": "Slot 2",
         "state_attributes": {
           "active": {
             "name": "Aktywna"
@@ -559,7 +589,7 @@
             "name": "Kolor"
           },
           "empty": {
-            "name": "Pusta"
+            "name": "Pusty"
           },
           "k_value": {
             "name": "Wartość K"
@@ -594,7 +624,7 @@
         }
       },
       "tray_3": {
-        "name": "Tacka 3",
+        "name": "Slot 3",
         "state_attributes": {
           "active": {
             "name": "Aktywna"
@@ -603,7 +633,7 @@
             "name": "Kolor"
           },
           "empty": {
-            "name": "Pusta"
+            "name": "Pusty"
           },
           "k_value": {
             "name": "Wartość K"
@@ -638,7 +668,7 @@
         }
       },
       "tray_4": {
-        "name": "Tacka 4",
+        "name": "Slot 4",
         "state_attributes": {
           "active": {
             "name": "Aktywna"
@@ -647,7 +677,7 @@
             "name": "Kolor"
           },
           "empty": {
-            "name": "Pusta"
+            "name": "Pusty"
           },
           "k_value": {
             "name": "Wartość K"
@@ -680,6 +710,36 @@
             "name": "Maksymalna waga filamentu"
           }
         }
+      },
+      "remaining_drying_time": {
+        "name": "Pozostały czas suszenia"
+      },
+      "ams_temp": {
+        "name": "Temperatura"
+      },
+      "humidity": {
+        "name": "Wilgotność"
+      },
+      "left_nozzle_temp": {
+        "name": "Temperatura dyszy lewej"
+      },
+      "left_target_nozzle_temp": {
+        "name": "Temperatura docelowa dyszy lewej"
+      },
+      "right_nozzle_temp": {
+        "name": "Temperatura dyszy prawej"
+      },
+      "right_target_nozzle_temp": {
+        "name": "Temperatura docelowa dyszy prawej"
+      },
+      "sdcard_status": {
+        "name": "Status karty SD",
+        "state": {
+          "missing": "Brak karty",
+          "normal": "Prawidłowy",
+          "abnormal": "Nieprawidłowy",
+          "readonly": "Tylko do odczytu"
+        }
       }
     },
     "camera": {
@@ -688,9 +748,6 @@
       }
     },
     "switch": {
-      "manual": {
-        "name": "Tryb ręcznego odświeżania"
-      },
       "camera": {
         "name": "Włącz kamerę"
       },
